@@ -1,0 +1,17 @@
+// connect to psql via command line 
+
+psql -U postgres
+// then enter master pasword
+
+// view all databases
+\l
+
+// connect to a db
+\c <dbname>
+
+
+// view db tables
+\dt
+
+// create databse 
+CREATE DATABASE <dbname>;

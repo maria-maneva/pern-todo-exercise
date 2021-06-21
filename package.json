@@ -1,0 +1,20 @@
+{
+  "name": "pern-server-client",
+  "version": "1.0.0",
+  "description": "Postgres Express React Node server and client example To do list app. Also using typescript and Bootstrap.",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm run install:server & npm run install:client",
+    "start": "npm run start:server & npm run start:client",
+    "start:server": "cd ./server && npm start",
+    "start:client": "cd ./client && npm start",
+    "install:server": "cd ./server && npm install",
+    "install:client": "cd ./client && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.10"
+  }
+}
