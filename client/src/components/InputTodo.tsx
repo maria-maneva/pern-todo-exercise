@@ -39,7 +39,7 @@ const InputTodo: React.FC<IInputTodoProps> = () => {
   };
 
   return (
-    <>
+    <div data-testid="input-form">
       <h6 className="mt-5">Add to do:</h6>
       <form onSubmit={onSumbmitForm} className="d-flex flex-column ">
         <input
@@ -48,6 +48,7 @@ const InputTodo: React.FC<IInputTodoProps> = () => {
           placeholder="Enter description..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          data-testid="description-input"
         />
         <CategoryList
           categories={controlledCategories}
@@ -58,7 +59,7 @@ const InputTodo: React.FC<IInputTodoProps> = () => {
           Add
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

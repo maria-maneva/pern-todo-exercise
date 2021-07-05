@@ -15,8 +15,9 @@ const CategoryPill: React.FC<ICategoryPillProps> = ({
   }, [category.cat_id]);
 
   return (
-    <span className="d-inline-block pe-1 pt-1">
+    <span className="d-inline-block pe-1 pt-1" data-testid="category-pill">
       <input
+        data-testid={`category-pill-input${category.cat_id}`}
         id={`checkbox${pillName}`}
         type="checkbox"
         className="btn-check"
@@ -25,6 +26,7 @@ const CategoryPill: React.FC<ICategoryPillProps> = ({
         readOnly
       />
       <label
+        data-testid={`category-pill-label${category.cat_id}`}
         className="btn btn-sm btn-outline-info"
         onClick={handleClick}
         htmlFor={pillName}

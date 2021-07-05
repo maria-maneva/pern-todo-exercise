@@ -5,15 +5,9 @@ import { getCategories } from "requests";
 import { useDataDispatch } from "hooks/useDataDispatch";
 import { setCategories } from "store/data.actions";
 import { ICategory } from "interfaces";
-import { useDataState } from "hooks";
 
 function App() {
   const dataDispatch = useDataDispatch();
-  const state = useDataState();
-
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +17,7 @@ function App() {
   }, [dataDispatch]);
 
   return (
-    <div className="App container">
+    <div className="App container" data-testid="main-container">
       <h1 className="text-center mt-5">PERN (bootstrap) "To Do" List</h1>
       <InputTodo />
       <ListTodos />

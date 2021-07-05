@@ -64,7 +64,11 @@ const EditTodo = ({ todo }: IEditTodoProps) => {
         Edit
       </button>
 
-      <div className="modal" id={`id${todo.todo_id}`}>
+      <div
+        className="modal"
+        id={`id${todo.todo_id}`}
+        data-testid={`edit-todo-modal${todo.todo_id}`}
+      >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -78,6 +82,7 @@ const EditTodo = ({ todo }: IEditTodoProps) => {
               <input
                 type="text"
                 className="form-control"
+                data-testid="edit-todo-field"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
               />

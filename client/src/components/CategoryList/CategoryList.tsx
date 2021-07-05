@@ -38,7 +38,7 @@ const CategoryList: React.FC<ICategoryListProps> = ({
   };
 
   return (
-    <div className="mt-2 mb-2">
+    <div className="mt-2 mb-2" data-testid="category-list">
       <h6>Select category</h6>
       <div>
         {categories.map((cat) => (
@@ -49,8 +49,9 @@ const CategoryList: React.FC<ICategoryListProps> = ({
               handleCategoryToggle(cat);
             }}
           />
-        ))}{" "}
+        ))}
         <input
+          data-testid="category-input"
           type="text"
           style={{
             display: "inline",

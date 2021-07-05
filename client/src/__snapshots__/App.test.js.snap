@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="App container"
+  data-testid="main-container"
+>
+  <h1
+    className="text-center mt-5"
+  >
+    PERN (bootstrap) "To Do" List
+  </h1>
+  <div
+    data-testid="input-form"
+  >
+    <h6
+      className="mt-5"
+    >
+      Add to do:
+    </h6>
+    <form
+      className="d-flex flex-column "
+      onSubmit={[Function]}
+    >
+      <input
+        className="form-control"
+        data-testid="description-input"
+        onChange={[Function]}
+        placeholder="Enter description..."
+        type="text"
+        value=""
+      />
+      <div
+        className="mt-2 mb-2"
+        data-testid="category-list"
+      >
+        <h6>
+          Select category
+        </h6>
+        <div>
+          <input
+            data-testid="category-input"
+            onChange={[Function]}
+            placeholder="Enter category divided by comma"
+            style={
+              Object {
+                "border": "none",
+                "display": "inline",
+                "minWidth": "250px",
+                "outline": "none",
+              }
+            }
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <button
+        className="btn btn-primary disabled"
+      >
+        Add
+      </button>
+    </form>
+  </div>
+  <table
+    className="table text-start align-middle mt-5"
+    data-testid="list-todos"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Description
+        </th>
+        <th
+          scope="col"
+        >
+          Categories
+        </th>
+        <th
+          className="text-right"
+          scope="col"
+        >
+          Edit
+        </th>
+        <th
+          className="text-right"
+          scope="col"
+        >
+          Delete
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+</div>
+`;
