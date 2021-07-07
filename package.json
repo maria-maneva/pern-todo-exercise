@@ -10,7 +10,8 @@
     "start:client": "cd ./client && npm start",
     "install:server": "cd ./server && npm install",
     "install:client": "cd ./client && npm install",
-    "test:client": "cd ./client && npm run test"
+    "test:client": "cd ./client && npm test",
+    "test:server": "cd ./server && npm test"
   },
   "author": "",
   "license": "ISC",

@@ -47,30 +47,35 @@ route.get("/", async (req, res) => {
 
 //create a todo
 route.post("/", async (req, res) => {
-  try {
-    const { description, categories } = req.body;
+  const { description, categories } = req.body;
+  if (description) {
+    try {
+      // test expensive calculations with either child_process or worker_thread
+      // invokePurgeCategoriesChildProcess();
 
-    // test expensive calculations with either child_process or worker_thread
-    // invokePurgeCategoriesChildProcess();
+      // const combinedCategories = await invokeProcessCategoriesChildProcess(
+      //   categories
+      // );
+      const combinedCategories = categories
+        ? await invokeProcessCategoriesWorker(categories)
+        : [];
 
-    // const combinedCategories = await invokeProcessCategoriesChildProcess(
-    //   categories
-    // );
-    const combinedCategories = await invokeProcessCategoriesWorker(categories);
+      const newTodo = await pool.query(
+        "INSERT INTO todo (description, category_ids) VALUES($1, $2) RETURNING todo_id, description, category_ids",
+        [description, combinedCategories?.map((c) => c.cat_id)]
+      );
 
-    const newTodo = await pool.query(
-      "INSERT INTO todo (description, category_ids) VALUES($1, $2)",
-      [description, combinedCategories.map((c) => c.cat_id)]
-    );
+      invokePurgeCategoriesWorker();
 
-    // test expensive calculations with either child_process or worker_thread
-    // invokePurgeCategoriesChildProcess();
-    invokePurgeCategoriesWorker();
-
-    res.json(newTodo.rows[0]);
-  } catch (error) {
-    console.error(error);
-    res.status(503).json({ error });
+      // test expensive calculations with either child_process or worker_thread
+      // invokePurgeCategoriesChildProcess();
+      res.json(newTodo.rows[0]);
+    } catch (error) {
+      console.error(111, error);
+      res.status(503).json({ error });
+    }
+  } else {
+    res.status(400).json({ error: "Missing description" });
   }
 });
 
@@ -82,45 +87,62 @@ route.get("/:id", async (req, res) => {
 
     res.json(todo.rows[0]);
   } catch (error) {
-    console.error(error);
-    res.status(503).json({ error });
+    console.log(error);
+    res.status(404).json({ error: "Todo not found." });
   }
 });
 
 //update a todo
 route.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { description, categories } = req.body;
+  const { id } = req.params;
 
-    const combinedCategories = await invokeProcessCategoriesChildProcess(
-      categories
-    );
+  const { description, categories } = req.body;
 
-    await pool.query(
-      "UPDATE todo SET description = $1, category_ids = $2 WHERE todo_id = $3",
-      [description, combinedCategories.map((c) => c.cat_id), id]
-    );
+  if (id) {
+    try {
+      const combinedCategories = categories
+        ? await invokeProcessCategoriesChildProcess(categories)
+        : [];
 
-    // invokePurgeCategoriesChildProcess();
-    invokePurgeCategoriesWorker();
+      await pool.query(
+        "UPDATE todo SET description = $1, category_ids = $2 WHERE todo_id = $3",
+        [description, combinedCategories.map((c) => c.cat_id), id]
+      );
 
-    res.json("Todo was updated");
-  } catch (error) {
-    console.error(error);
-    res.status(503).json({ error });
+      // invokePurgeCategoriesChildProcess();
+      invokePurgeCategoriesWorker();
+
+      res.json({ status: "Todo was updated" });
+    } catch (error) {
+      console.log(error);
+      if (error.code === "ERR_MISSING_ARGS" || error.code === "22P02") {
+        res.status(404).json({ error });
+      } else {
+        res.status(503).json({ error });
+      }
+    }
+  } else {
+    res.status(404).json({ error: "Todo not found." });
   }
 });
 
 //delete a todo
 route.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(404).json({ error: "Todo not found." });
+  }
   try {
-    const { id } = req.params;
     await pool.query("DELETE FROM todo WHERE todo_id = $1", [id]);
-    res.json("Todo was deleted");
+    res.json({ status: "Todo was deleted" });
   } catch (error) {
-    console.error(error);
-    res.status(503).json({ error });
+    if ((error.code = "22P02")) {
+      res.status(404).send({ error: "Todo not found." });
+    } else {
+      console.log(error);
+      res.status(503).json({ error });
+    }
   }
 });
 
